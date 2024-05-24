@@ -40,7 +40,7 @@
 <script src="{{asset('assets/compiled/js/jquery-3.7.1.js')}}"></script>
 <script>
     function unduhBulanan() {
-        location.href = "{{route('laporan_bulanan.unduh')}}"
+        location.href = "{{route('laporan_bulanan.unduh')}}/" + $('#bulan-column').val()
     }
 </script>
 

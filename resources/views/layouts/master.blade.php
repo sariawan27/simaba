@@ -28,7 +28,7 @@
         <!-- sidebar -->
         @include('layouts.sidebar')
         <!-- end  sidebar -->
-        <nav class="navbar sticky-top navbar-light" style="z-index: 2; background-color: white;">
+        <nav class="navbar sticky-top navbar-light" style="z-index: 12; background-color: white;">
             <div class="row" style="width: 100%;">
                 <div class="col-12 d-flex justify-content-end">
                     <div class="btn-group me-1 mb-1">

@@ -68,13 +68,13 @@ class LaporanController extends Controller
         return view('pages.laporan.index_bulanan');
     }
 
-    public function downloadBulanan(Request $request)
+    public function downloadBulanan($bulan = null)
     {
-        $dataDetailPengajuan = DetailPengajuan::select('barang.id', 'barang.nama_barang', 'barang.satuan')->selectRaw(DB::raw('sum(`detail_pengajuan`.`quantity`) as quantity'))->leftJoin('barang', 'detail_pengajuan.barang_id', '=', 'barang.id')->where('detail_pengajuan.created_at', 'like', '%' . $request->bulan . '%')->groupBy('detail_pengajuan.barang_id')->get();
+        $dataDetailPengajuan = DetailPengajuan::select('barang.id', 'barang.nama_barang', 'barang.satuan')->selectRaw(DB::raw('sum(`detail_pengajuan`.`quantity`) as quantity'))->leftJoin('barang', 'detail_pengajuan.barang_id', '=', 'barang.id')->where('detail_pengajuan.created_at', 'like', '%' . $bulan . '%')->groupBy('detail_pengajuan.barang_id')->get();
 
         $pdf = Pdf::loadView('pages.laporan.bulanan_pdf',  [
             'detailPengajuan' => $dataDetailPengajuan,
-            'bulan' => $request->bulan
+            'bulan' => $bulan
         ]);
 
         return $pdf->download();

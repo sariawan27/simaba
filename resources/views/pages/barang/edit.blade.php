@@ -38,7 +38,7 @@
                                 <div class="col-md-2 col-12">
                                     <div class="form-group">
                                         <label for="stok-column">Stok</label>
-                                        <input type="number" id="stok-column" class="form-control" placeholder="Stok" name="stok" value="{{$data->stok}}">
+                                        <input type="number" min="1" id="stok-column" class="form-control" placeholder="Stok" name="stok" value="{{$data->stok}}">
                                     </div>
                                 </div>
                                 <div class="col-md-4 col-12">
@@ -50,7 +50,7 @@
                                 <div class="col-md-6 col-12">
                                     <div class="form-group">
                                         <label for="max-quantity-column">Max. Quantity</label>
-                                        <input type="number" id="max-quantity-column" class="form-control" placeholder="Max. Quantity" name="max_quantity" value="{{$data->max_quantity}}">
+                                        <input type="number" min="1" id="max-quantity-column" class="form-control" placeholder="Max. Quantity" name="max_quantity" value="{{$data->max_quantity}}">
                                     </div>
                                 </div>
                             </div>
@@ -77,6 +77,9 @@
 <script src="{{asset('assets/compiled/js/jquery-3.7.1.js')}}"></script>
 <script>
     $(document).ready(function() {
+        $('#stok-column').change(function() {
+            $('#stok-column').val = $('#stok-column').val() < 0 ? 0 : $('#stok-column').val()
+        })
 
         if ('{{$data->level=="taruni"}}') {
             $('#data_taruni').show()
@@ -108,7 +111,7 @@
                         opacity: '100%'
                     });
                     $('#alertnya').html(`
-                            <div class="alert alert-success alert-dismissible show fade" style="z-index: 3;">
+                            <div class="alert alert-success alert-dismissible show fade" style="z-index: 13;">
                                 <i class="bi bi-check-circle"></i> Data berhasil disimpan.
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
@@ -128,7 +131,7 @@
                         errorMessage = jqXHR.responseJSON;
                         html = ''
                         html += `
-                                <div class="alert alert-warning alert-dismissible show fade" style="z-index: 3;">
+                                <div class="alert alert-warning alert-dismissible show fade" style="z-index: 13;">
                                     Warning
                                     <ul>`
                         for (const property in errorMessage) {
@@ -156,7 +159,7 @@
                     } else {
                         //peringatan ketika data yg diinputkan tidak sesuai
                         $('#alertnya').html(`
-                                <div class="alert alert-danger alert-dismissible show fade" style="z-index: 3;">
+                                <div class="alert alert-danger alert-dismissible show fade" style="z-index: 13;">
                                     <i class="bi bi-exclamation-circle"></i> Gagal mengupdate data.
                                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                 </div>

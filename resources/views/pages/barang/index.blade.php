@@ -33,6 +33,7 @@
                                     <th>#</th>
                                     <th>Nama</th>
                                     <th>Stok</th>
+                                    <th>Max. Qty yg Diambil</th>
                                     <th>Deskripsi</th>
                                     {{-- <th>Note</th> --}}
 
@@ -86,6 +87,11 @@
                         }
                     },
                     {
+                        render: function(data, type, row, meta) {
+                            return row.max_quantity + " " + row.satuan;
+                        }
+                    },
+                    {
                         data: 'description',
                         name: 'description'
                     },
@@ -120,6 +126,11 @@
                     {
                         render: function(data, type, row, meta) {
                             return row.stok + " " + row.satuan;
+                        }
+                    },
+                    {
+                        render: function(data, type, row, meta) {
+                            return row.max_quantity + " " + row.satuan;
                         }
                     },
                     {

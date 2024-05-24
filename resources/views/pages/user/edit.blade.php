@@ -136,7 +136,7 @@
                         opacity: '100%'
                     });
                     $('#alertnya').html(`
-                            <div class="alert alert-success alert-dismissible show fade" style="z-index: 3;">
+                            <div class="alert alert-success alert-dismissible show fade" style="z-index: 13;">
                                 <i class="bi bi-check-circle"></i> Data berhasil disimpan.
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
@@ -156,7 +156,7 @@
                         errorMessage = jqXHR.responseJSON;
                         html = ''
                         html += `
-                                <div class="alert alert-warning alert-dismissible show fade" style="z-index: 3;">
+                                <div class="alert alert-warning alert-dismissible show fade" style="z-index: 13;">
                                     Warning
                                     <ul>`
                         for (const property in errorMessage) {
@@ -184,7 +184,7 @@
                     } else {
                         //peringatan ketika data yg diinputkan tidak sesuai
                         $('#alertnya').html(`
-                                <div class="alert alert-danger alert-dismissible show fade" style="z-index: 3;">
+                                <div class="alert alert-danger alert-dismissible show fade" style="z-index: 13;">
                                     <i class="bi bi-exclamation-circle"></i> Gagal mengupdate data.
                                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                 </div>

@@ -20,12 +20,12 @@ class PengajuanController extends Controller
     {
         if ($request->ajax()) {
             $sessionnya = session()->get('users');
-            if ($sessionnya['level']=='taruni') {
+            if ($sessionnya['level'] == 'taruni') {
                 $data = Pengajuan::where('user_id', $sessionnya->id)->get();
                 return DataTables::of($data)
                     ->addIndexColumn()
-                    ->addColumn('action', function($row){
-                        $actionBtn = '<a href="'.route('pengajuan.show', $row->id).'" class="edit btn btn-info btn-sm">Detail</a> <a href="'.route('pengajuan.delete', $row->id).'" class="delete btn btn-danger btn-sm">Delete</a>';
+                    ->addColumn('action', function ($row) {
+                        $actionBtn = '<a href="' . route('pengajuan.show', $row->id) . '" class="edit btn btn-info btn-sm">Detail</a> <a href="' . route('pengajuan.delete', $row->id) . '" class="delete btn btn-danger btn-sm">Delete</a>';
                         return $actionBtn;
                     })
                     ->rawColumns(['action'])
@@ -34,8 +34,8 @@ class PengajuanController extends Controller
                 $data = Pengajuan::get();
                 return DataTables::of($data)
                     ->addIndexColumn()
-                    ->addColumn('action', function($row){
-                        $actionBtn = '<a href="'.route('pengajuan.show', $row->id).'" class="edit btn btn-info btn-sm">Detail</a>';
+                    ->addColumn('action', function ($row) {
+                        $actionBtn = '<a href="' . route('pengajuan.show', $row->id) . '" class="edit btn btn-info btn-sm">Detail</a>';
                         return $actionBtn;
                     })
                     ->rawColumns(['action'])
@@ -52,7 +52,7 @@ class PengajuanController extends Controller
     public function create()
     {
         $sessionnya = session()->get('users');
-        if ($sessionnya['level']!='taruni') {
+        if ($sessionnya['level'] != 'taruni') {
             return view('pages.error.error404');
         }
 
@@ -60,9 +60,9 @@ class PengajuanController extends Controller
 
         $barangTerakhir = Pengajuan::orderBy('created_at', 'desc')->first();
         if ($barangTerakhir) {
-            $kodePengajuan = "KP".str_pad(intval(substr($barangTerakhir->kd_pengajuan, -1))+1, 7, '0', STR_PAD_LEFT);
+            $kodePengajuan = "KP" . str_pad(intval(substr($barangTerakhir->kd_pengajuan, -1)) + 1, 7, '0', STR_PAD_LEFT);
         } else {
-            $kodePengajuan = "KP".str_pad("0", 7, '0', STR_PAD_LEFT);
+            $kodePengajuan = "KP" . str_pad("0", 7, '0', STR_PAD_LEFT);
         }
         return view('pages.pengajuan.add', [
             'dataBarang' => $barang,
@@ -120,7 +120,7 @@ class PengajuanController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id=null)
+    public function show($id = null)
     {
         // $sessionnya = session()->get('users');
 
@@ -158,7 +158,7 @@ class PengajuanController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id=null)
+    public function destroy($id = null)
     {
         $pengajuan = Pengajuan::find($id);
 
@@ -170,15 +170,17 @@ class PengajuanController extends Controller
         return redirect()->route('pengajuan.index')->with(['success' => 'Data telah dihapus!']);
     }
 
-    function wkwk() {
+    function wkwk()
+    {
         $allData = session()->all();
 
         return response()->json(['message' => 'Data saved successfully', 'data' => $allData]);
     }
 
-    function setujuiPengajuan($id=null) {
+    function setujuiPengajuan($id = null)
+    {
         $sessionnya = session()->get('users');
-        if ($sessionnya['level']!='pengasuh') {
+        if ($sessionnya['level'] != 'pengasuh') {
             return view('pages.error.error404');
         }
 
@@ -191,9 +193,10 @@ class PengajuanController extends Controller
         return redirect()->route('pengajuan.show', $id);
     }
 
-    function tolakPengajuan($id=null) {
+    function tolakPengajuan($id = null)
+    {
         $sessionnya = session()->get('users');
-        if ($sessionnya['level']!='pengasuh') {
+        if ($sessionnya['level'] != 'pengasuh') {
             return view('pages.error.error404');
         }
 
@@ -204,9 +207,10 @@ class PengajuanController extends Controller
         return redirect()->route('pengajuan.show', $id);
     }
 
-    function selesaiKirimBarang($id=null) {
+    function selesaiKirimBarang($id = null)
+    {
         $sessionnya = session()->get('users');
-        if ($sessionnya['level']!='taruni') {
+        if ($sessionnya['level'] != 'taruni') {
             return view('pages.error.error404');
         }
 
@@ -217,9 +221,10 @@ class PengajuanController extends Controller
         return redirect()->route('pengajuan.show', $id);
     }
 
-    function ulasanPengajuan(Request $request, $id=null) {
+    function ulasanPengajuan(Request $request, $id = null)
+    {
         $sessionnya = session()->get('users');
-        if ($sessionnya['level']!='taruni') {
+        if ($sessionnya['level'] != 'taruni') {
             return view('pages.error.error404');
         }
 
