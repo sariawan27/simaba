@@ -263,13 +263,18 @@
             $("table tbody tr:eq(" + getId + ")").find("td:eq(1)").text(tools[getId].qty);
         } else {
             $("table tbody tr:eq(" + getId + ")").remove();
-            alert("hebat kehapus" + getId)
             tools = tools.filter((x) => x.barang_id !== index)
-            console.log(tools.filter((x) => x.barang_id !== index))
+            console.log(tools)
         }
 
         $('#barang-dipilih-column').val(JSON.stringify(tools))
 
+    }
+
+    function getToolsNotBorrow() {
+        tools = []
+        $('#barang-dipilih-column').val(tools)
+        $("table tbody tr").remove();
     }
 </script>
 <script>

@@ -21,7 +21,7 @@ class BarangController extends Controller
                 return DataTables::of($data)
                     ->addIndexColumn()
                     ->addColumn('action', function ($row) {
-                        $actionBtn = '<a href="' . route('barang.edit', $row->id) . '" class="edit btn btn-info btn-sm">Edit</a> <a href="' . route('barang.delete', $row->id) . '" class="delete btn btn-danger btn-sm">Delete</a>';
+                        $actionBtn = '<a href="' . route('barang.edit', $row->id) . '" class="edit btn btn-info btn-sm">Edit</a> <a href="' . route('barang.delete', $row->id) . '" class="delete btn btn-danger btn-sm" onclick="return confirm(' . "'Yakin ingin menghapus ini?'" . ');">Delete</a>';
                         return $actionBtn;
                     })
                     ->rawColumns(['action'])

@@ -59,6 +59,9 @@
 <script src="{{asset('assets/compiled/js/dataTables.bootstrap5.js')}}"></script>
 <script src="{{asset('assets/compiled/js/dataTables.js')}}"></script>
 <script>
+    $('.delete').on('click', function() {
+        return confirm('Are you sure?');
+    });
     $(function() {
 
         if ("{{Auth::user()->level}}" == 'pengasuh') {

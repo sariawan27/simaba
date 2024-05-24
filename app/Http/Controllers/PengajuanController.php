@@ -25,7 +25,7 @@ class PengajuanController extends Controller
                 return DataTables::of($data)
                     ->addIndexColumn()
                     ->addColumn('action', function ($row) {
-                        $actionBtn = '<a href="' . route('pengajuan.show', $row->id) . '" class="edit btn btn-info btn-sm">Detail</a> <a href="' . route('pengajuan.delete', $row->id) . '" class="delete btn btn-danger btn-sm">Delete</a>';
+                        $actionBtn = '<a href="' . route('pengajuan.show', $row->id) . '" class="edit btn btn-info btn-sm">Detail</a> <a href="' . route('pengajuan.delete', $row->id) . '" class="delete btn btn-danger btn-sm" onclick="return confirm(' . "'Yakin ingin menghapus ini?'" . ');">Delete</a>';
                         return $actionBtn;
                     })
                     ->rawColumns(['action'])
@@ -56,7 +56,7 @@ class PengajuanController extends Controller
             return view('pages.error.error404');
         }
 
-        $barang =  Barang::latest()->get();
+        $barang =  Barang::where('stok', '>', 0)->orderBy('created_at', 'desc')->get();
 
         $barangTerakhir = Pengajuan::orderBy('created_at', 'desc')->first();
         if ($barangTerakhir) {

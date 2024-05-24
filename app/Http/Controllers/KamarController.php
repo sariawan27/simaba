@@ -23,7 +23,7 @@ class KamarController extends Controller
                 return DataTables::of($data)
                     ->addIndexColumn()
                     ->addColumn('action', function ($row) {
-                        $actionBtn = '<a href="' . route('kamar.show', $row->id) . '" class="edit btn btn-info btn-sm">Detail</a> <a href="' . route('kamar.delete', $row->id) . '" class="delete btn btn-danger btn-sm">Delete</a>';
+                        $actionBtn = '<a href="' . route('kamar.show', $row->id) . '" class="edit btn btn-info btn-sm">Detail</a> <a href="' . route('kamar.delete', $row->id) . '" class="delete btn btn-danger btn-sm" onclick="return confirm(' . "'Yakin ingin menghapus ini?'" . ');">Delete</a>';
                         return $actionBtn;
                     })
                     ->rawColumns(['action'])
