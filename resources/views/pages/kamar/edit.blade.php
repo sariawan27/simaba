@@ -220,7 +220,7 @@
                             $(this).html(``);
                         });
 
-                        location.href = "{{ route('kamar.edit', explode('/', (parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)))[3]) }}";
+                        location.href = "{{ route('kamar.show', explode('/', (parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)))[3]) }}";
                     }, 2000);
 
                 },
