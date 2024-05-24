@@ -27,22 +27,21 @@
 
                 <!-- sebagai kepala asrama -->
                 @if(Auth::user()->level == 'kepala_asrama')
-                <li class="sidebar-item  has-sub {{ ((request()->routeIs('laporan.*')) ? 'active' : '') }}">
-                    <a href="#" class='sidebar-link'>
+                <li class="sidebar-item  has-sub {{ ((request()->routeIs('laporan.*')) || (request()->routeIs('laporan_bulanan.*')) ? 'active' : '') }}">
+                    <a href="{{ route('laporan.index') }}" class='sidebar-link'>
                         <i class="bi bi-file-earmark-arrow-down-fill"></i>
                         <span>Laporan</span>
                     </a>
 
                     <ul class="submenu submenu-open">
-
                         <li class="submenu-item {{ ((request()->routeIs('laporan.*')) ? 'active' : '') }}">
                             <a href="{{ route('laporan.index') }}" class='submenu-link'>
                                 <span>Laporan Pengajuan</span>
                             </a>
                         </li>
 
-                        <li class="submenu-item  ">
-                            <a href="auth-register.html" class="submenu-link">Laporan Bulanan</a>
+                        <li class="submenu-item {{ ((request()->routeIs('laporan_bulanan.*')) ? 'active' : '') }}">
+                            <a href="{{ route('laporan_bulanan.index') }}" class="submenu-link">Laporan Bulanan</a>
 
                         </li>
 
