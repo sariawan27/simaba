@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('ulasan', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger("pengajuan_id")->nullable();
-            $table->enum('rating', ['1', '2', '3', '4', '5'])->nullable();
             $table->text('catatan_ulasan');
             $table->timestamps();
 
