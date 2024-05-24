@@ -209,7 +209,6 @@ class UserController extends Controller
             'no_identity'              => 'required',
             'nama'              => 'required',
             'email'             => 'required',
-            'level'             => 'required',
             'alamat'             => 'required',
             'no_telp'             => 'required|numeric'
         ]);

@@ -47,6 +47,17 @@
                                         </select>
                                     </fieldset>
                                 </div>
+                                @else
+                                <div class="col-md-6 col-12" style="display: none;">
+                                    <label>Role</label>
+                                    <fieldset class="form-group">
+                                        <select name="level" class="form-select" id="rolenya">
+                                            <option value="pengasuh" {{ ($data->level=='pengasuh') ? 'selected': ''}}>Pengasuh</option>
+                                            <option value="kepala_asrama" {{ ($data->level=='kepala_asrama') ? 'selected': ''}}>Kepala Asrama</option>
+                                            <option value="taruni" {{ ($data->level=='taruni') ? 'selected': ''}}>Taruni</option>
+                                        </select>
+                                    </fieldset>
+                                </div>
                                 @endif
                                 <div class="col-md-6 col-12">
                                     <div class="form-group">

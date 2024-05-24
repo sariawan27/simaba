@@ -219,7 +219,7 @@
         series: [{
             data: JSON.parse('{!!$barangGraf!!}').value,
         }, ],
-        colors: ['#F44236', '#435ebe', '#F44236'],
+        colors: JSON.parse('{!!$barangGraf!!}').color,
         xaxis: {
             categories: JSON.parse('{!!$barangGraf!!}').xaxis,
         },
