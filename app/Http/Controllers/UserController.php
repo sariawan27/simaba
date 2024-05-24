@@ -20,8 +20,8 @@ class UserController extends Controller
             $data = User::latest()->get();
             return DataTables::of($data)
                 ->addIndexColumn()
-                ->addColumn('action', function($row){
-                    $actionBtn = '<a href="'.route('users.edit', $row->id).'" class="edit btn btn-primary btn-sm">Edit</a> <a href="'.route('users.delete', $row->id).'" class="delete btn btn-danger btn-sm">Delete</a>';
+                ->addColumn('action', function ($row) {
+                    $actionBtn = '<a href="' . route('users.edit', $row->id) . '" class="edit btn btn-primary btn-sm">Edit</a> <a href="' . route('users.delete', $row->id) . '" class="delete btn btn-danger btn-sm">Delete</a>';
                     return $actionBtn;
                 })
                 ->rawColumns(['action'])
@@ -93,7 +93,7 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id=null)
+    public function edit($id = null)
     {
         $dataUser = User::leftJoin('taruni', 'users.id', '=', 'taruni.user_id')->leftJoin('kamar', 'kamar.id', '=', 'taruni.kamar_id')->where('users.id', $id)->first();
 
@@ -105,7 +105,7 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id=null)
+    public function update(Request $request, $id = null)
     {
         $validator = Validator::make($request->all(), [
             'no_identity'              => 'required',
@@ -148,25 +148,26 @@ class UserController extends Controller
     /**
      * Kamar Taruni
      */
-    public function kamarTaruni(Request $request, $id=null)
+    public function kamarTaruni(Request $request, $id = null)
     {
         if ($request->ajax()) {
             $data = User::leftJoin('taruni', 'users.id', '=', 'taruni.user_id')->leftJoin('kamar', 'kamar.id', '=', 'taruni.kamar_id')->where('kamar.id', $id)->get();
             return DataTables::of($data)
                 ->addIndexColumn()
-                ->addColumn('action', function($row){
-                    $actionBtn = '<a href="'.route('users.edit', $row->id).'" class="edit btn btn-primary btn-sm">Edit</a> <a href="'.route('users.delete_kamar_taruni', [$row->id, $row->user_id]).'" class="delete btn btn-danger btn-sm">Delete</a>';
+                ->addColumn('action', function ($row) {
+                    $actionBtn = '<a href="' . route('users.edit', $row->id) . '" class="edit btn btn-primary btn-sm">Edit</a> <a href="' . route('users.delete_kamar_taruni', [$row->id, $row->user_id]) . '" class="delete btn btn-danger btn-sm">Delete</a>';
                     return $actionBtn;
                 })
                 ->rawColumns(['action'])
                 ->make(true);
         }
-        
+
 
         return view('pages.kamar.show', []);
     }
 
-    public function deleteKamarTaruni($id=null, $userId=null) {
+    public function deleteKamarTaruni($id = null, $userId = null)
+    {
         Taruni::where("kamar_id", $id)->where('user_id', $userId)->update([
             "kamar_id" => null
         ]);
@@ -177,7 +178,7 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id=null)
+    public function destroy($id = null)
     {
         $user = User::find($id);
 
@@ -194,8 +195,8 @@ class UserController extends Controller
         if (!$userSession) {
             return redirect()->route('dashboard.index');
         }
-        
-        $dataUser = User::leftJoin('taruni', 'users.id', '=', 'taruni.user_id')->leftJoin('kamar', 'kamar.id', '=', 'taruni.kamar_id')->where('users.id', $userSession->id)->first();
+
+        $dataUser = User::select('users.id', 'users.nama', 'users.email', 'users.password', 'users.alamat', 'users.no_identitas', 'users.no_telp', 'users.level', 'users.created_at', 'users.updated_at', 'taruni.kamar_id', 'taruni.nim', 'taruni.angkatan', 'taruni.id as taruni_id', 'kamar.nama_kamar')->leftJoin('taruni', 'taruni.user_id', '=', 'users.id')->leftJoin('kamar', 'kamar.id', '=', 'taruni.kamar_id')->where('users.id', $userSession->id)->first();
 
         return view('pages.user.profile', [
             'data' => $dataUser
@@ -215,7 +216,7 @@ class UserController extends Controller
 
         if ($validator->fails()) return response()->json($validator->messages(), 422);
 
-        if ($request->password==null) {
+        if ($request->password == null) {
             $userUpdated = User::where('id', intval($request->id))->update([
                 "no_identitas" => $request->no_identity,
                 "nama"  => $request->nama,
@@ -223,7 +224,7 @@ class UserController extends Controller
                 "no_telp" => $request->no_telp,
                 "level" => $request->level,
                 "alamat" => $request->alamat,
-    
+
             ]);
         } else {
             $userUpdated = User::where('id', intval($request->id))->update([
@@ -234,7 +235,7 @@ class UserController extends Controller
                 "level" => $request->level,
                 "alamat" => $request->alamat,
                 "password" =>  Hash::make($request->password)
-    
+
             ]);
         }
 

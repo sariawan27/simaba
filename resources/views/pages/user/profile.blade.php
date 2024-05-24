@@ -26,7 +26,7 @@
                                 <div class="col-md-6 col-12">
                                     <div class="form-group">
                                         <label for="no-identity-column">No. Identitas</label>
-                                        <input type="text" id="no-identity-column" class="form-control" placeholder="Nomor Identitas" style="display: none;" name="id" value="{{$data->user_id}}">
+                                        <input type="text" id="no-identity-column" class="form-control" placeholder="Nomor Identitas" style="display: none;" name="id" value="{{$data->id}}">
                                         <input type="text" id="no-identity-column" class="form-control" placeholder="Nomor Identitas" name="no_identity" value="{{$data->no_identitas}}">
                                     </div>
                                 </div>
@@ -145,7 +145,7 @@
                         opacity: '100%'
                     });
                     $('#alertnya').html(`
-                            <div class="alert alert-success alert-dismissible show fade">
+                            <div class="alert alert-success alert-dismissible show fade" style="z-index: 3;">
                                 <i class="bi bi-check-circle"></i> Data berhasil disimpan.
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
@@ -155,7 +155,7 @@
                             $(this).html(``);
                         });
 
-                        // location.reload();
+                        location.reload();
                     }, 2300);
 
                 },
@@ -165,7 +165,7 @@
                         errorMessage = jqXHR.responseJSON;
                         html = ''
                         html += `
-                                <div class="alert alert-warning alert-dismissible show fade">
+                                <div class="alert alert-warning alert-dismissible show fade" style="z-index: 3;">
                                     Warning
                                     <ul>`
                         for (const property in errorMessage) {
@@ -193,7 +193,7 @@
                     } else {
                         //peringatan ketika data yg diinputkan tidak sesuai
                         $('#alertnya').html(`
-                                <div class="alert alert-danger alert-dismissible show fade">
+                                <div class="alert alert-danger alert-dismissible show fade" style="z-index: 3;">
                                     <i class="bi bi-exclamation-circle"></i> Gagal mengupdate data.
                                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                 </div>

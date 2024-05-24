@@ -133,7 +133,7 @@
                         opacity: '100%'
                     });
                     $('#alertnya').html(`
-                            <div class="alert alert-success alert-dismissible show fade">
+                            <div class="alert alert-success alert-dismissible show fade" style="z-index: 3;">
                                 <i class="bi bi-check-circle"></i> Data berhasil disimpan.
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
@@ -153,7 +153,7 @@
                         errorMessage = jqXHR.responseJSON;
                         html = ''
                         html += `
-                                <div class="alert alert-warning alert-dismissible show fade">
+                                <div class="alert alert-warning alert-dismissible show fade" style="z-index: 3;">
                                     Warning
                                     <ul>`
                         for (const property in errorMessage) {
