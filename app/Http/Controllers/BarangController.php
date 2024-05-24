@@ -16,14 +16,21 @@ class BarangController extends Controller
     {
         if ($request->ajax()) {
             $data = Barang::latest()->get();
-            return DataTables::of($data)
-                ->addIndexColumn()
-                ->addColumn('action', function($row){
-                    $actionBtn = '<a href="'.route('barang.edit', $row->id).'" class="edit btn btn-info btn-sm">Edit</a> <a href="'.route('barang.delete', $row->id).'" class="delete btn btn-danger btn-sm">Delete</a>';
-                    return $actionBtn;
-                })
-                ->rawColumns(['action'])
-                ->make(true);
+            $userSession = session()->get('users');
+            if ($userSession->level == 'pengasuh') {
+                return DataTables::of($data)
+                    ->addIndexColumn()
+                    ->addColumn('action', function ($row) {
+                        $actionBtn = '<a href="' . route('barang.edit', $row->id) . '" class="edit btn btn-info btn-sm">Edit</a> <a href="' . route('barang.delete', $row->id) . '" class="delete btn btn-danger btn-sm">Delete</a>';
+                        return $actionBtn;
+                    })
+                    ->rawColumns(['action'])
+                    ->make(true);
+            } else {
+                return DataTables::of($data)
+                    ->addIndexColumn()
+                    ->make(true);
+            }
         }
 
         return view('pages.barang.index', []);
@@ -66,14 +73,14 @@ class BarangController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id=null)
+    public function show($id = null)
     {
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id=null)
+    public function edit($id = null)
     {
         $dataBarang = Barang::where('id', $id)->first();
 

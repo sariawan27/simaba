@@ -6,21 +6,6 @@
         <div class="col-6">
             <h3>Pengajuan</h3>
         </div>
-        <div class="col-6 d-flex justify-content-end">
-            <div class="btn-group me-1 mb-1">
-                <div class="dropdown">
-                    <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background-color: #435ebe;">
-                        <i class="bi bi-person-circle"></i> {{Auth::user()->nama}}
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-end" style="padding: 7px;">
-                        <h6>Kelola Akun</h6>
-                        <a href="{{ route('users.profile') }}" class="dropdown-item">Profile</a>
-                        <hr />
-                        <a href="{{ route('auth.logout') }}" style="color: red;" class="dropdown-item">Logout</a>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </div>
 <div class="page-content">

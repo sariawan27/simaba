@@ -6,21 +6,6 @@
         <div class="col-6">
             <h3>Dashboard</h3>
         </div>
-        <div class="col-6 d-flex justify-content-end">
-            <div class="btn-group me-1 mb-1">
-                <div class="dropdown">
-                    <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background-color: #435ebe;">
-                        <i class="bi bi-person-circle"></i> {{Auth::user()->nama}}
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-end" style="padding: 7px;">
-                        <h6>Kelola Akun</h6>
-                        <a href="{{ route('users.profile') }}" class="dropdown-item">Profile</a>
-                        <hr />
-                        <a href="{{ route('auth.logout') }}" style="color: red;" class="dropdown-item">Logout</a>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </div>
 <div class="page-content">
@@ -85,6 +70,30 @@
             @endif
         </div>
 
+        @if(Auth::user()->level != 'taruni')
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Stok Barang Tersedia</h4>
+                    </div>
+                    <div class="card-body">
+                        @foreach (json_decode($barangAkanHabis) as $value)
+                        <div class="row mt-1">
+                            <div class="col-12">
+                                <div class="alert alert-light-danger alert-dismissible color-danger">
+                                    <i class="bi bi-exclamation-circle"></i> {{$value->nama_barang}} akan habis.
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            </div>
+                        </div>
+                        @endforeach
+                        <div id="barang-chart"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endif
         <div class="row">
             <div class="col-12">
                 <div class="card">
@@ -105,6 +114,7 @@
 <!-- Need: Apexcharts -->
 <script src="{{asset('assets/extensions/apexcharts/apexcharts.min.js')}}"></script>
 <script>
+    console.log(JSON.parse('{!!$barangGraf!!}'))
     var optionsPengajuan = {
         annotations: {
             position: "back",
@@ -120,6 +130,26 @@
             opacity: 1,
         },
         plotOptions: {},
+        tooltip: {
+            custom: function({
+                series,
+                seriesIndex,
+                dataPointIndex,
+                w
+            }) {
+                console.log("series: ", series)
+                console.log("data: ", JSON.parse('{!!$arrBarang!!}')[dataPointIndex])
+                console.log("dataPointIndex: ", dataPointIndex)
+                var html = '<div class="row"><div class="col-8"></div></div>';
+                JSON.parse('{!!$arrBarang!!}')[dataPointIndex].forEach(element => {
+                    html += '<div class="row"><div class="col-8">' + element?.nama_barang + ': ' + '</div> <div class="col-4 d-flex justify-content-end">' + element?.quantity + '</div> </div>'
+                });
+                return '<div class="arrow_box" style="margin:5px 8px 5px 8px;">' +
+                    '<div class=" text-center" style="margin:5px 8px 5px 8px;"><h5>Info</h5></div>' +
+                    html +
+                    '</div>'
+            }
+        },
         series: [{
             name: "sales",
             data: JSON.parse("{{$pengajuanGraf}}"),
@@ -149,5 +179,57 @@
     )
 
     chartPengajuan.render()
+
+    var optionsBarang = {
+        annotations: {
+            position: "back",
+        },
+        dataLabels: {
+            enabled: false,
+        },
+        chart: {
+            type: "bar",
+            height: 300,
+        },
+        fill: {
+            opacity: 1,
+        },
+        tooltip: {
+            theme: 'dark',
+            x: {
+                show: false
+            },
+            y: {
+                title: {
+                    formatter: function() {
+                        return ''
+                    }
+                }
+            }
+        },
+        plotOptions: {
+            bar: {
+                barHeight: '100%',
+                distributed: true,
+                dataLabels: {
+                    position: 'bottom'
+                },
+            }
+        },
+        series: [{
+            data: JSON.parse('{!!$barangGraf!!}').value,
+        }, ],
+        colors: ['#F44236', '#435ebe', '#F44236'],
+        xaxis: {
+            categories: JSON.parse('{!!$barangGraf!!}').xaxis,
+        },
+    }
+
+    var chartBarang = new ApexCharts(
+        document.querySelector("#barang-chart"),
+        optionsBarang
+    )
+
+    chartBarang.render()
 </script>
 @endsection

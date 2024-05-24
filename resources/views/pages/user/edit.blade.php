@@ -6,21 +6,6 @@
         <div class="col-6">
             <h3>Users</h3>
         </div>
-        <div class="col-6 d-flex justify-content-end">
-            <div class="btn-group me-1 mb-1">
-                <div class="dropdown">
-                    <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background-color: #435ebe;">
-                        <i class="bi bi-person-circle"></i> {{Auth::user()->nama}}
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-end" style="padding: 7px;">
-                        <h6>Kelola Akun</h6>
-                        <a href="{{ route('users.profile') }}" class="dropdown-item">Profile</a>
-                        <hr />
-                        <a href="{{ route('auth.logout') }}" style="color: red;" class="dropdown-item">Logout</a>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </div>
 <div class="page-content">
@@ -140,7 +125,7 @@
 
             $.ajax({
                 type: "PUT",
-                url: "{{ route('users.update', explode(" / ", parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH))[3]) }}",
+                url: "{{ route('users.update', explode('/', (parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)))[3]) }}",
                 data: $("form").serialize(),
                 dataType: "json",
                 success: function(data) {
@@ -161,8 +146,8 @@
                             $(this).html(``);
                         });
 
-                        // location.reload();
-                    }, 2300);
+                        location.href = "{{ route('users.update', explode('/', (parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)))[3]) }}";
+                    }, 2000);
 
                 },
                 error: function(jqXHR, exception) {
@@ -208,7 +193,7 @@
                             $("#alertnya").fadeTo(1000, 0).slideUp(1000, function() {
                                 $(this).html(``);
                             });
-                        }, 2300);
+                        }, 2000);
                     }
                 }
 

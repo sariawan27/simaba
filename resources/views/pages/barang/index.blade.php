@@ -6,21 +6,6 @@
         <div class="col-6">
             <h3>Barang</h3>
         </div>
-        <div class="col-6 d-flex justify-content-end">
-            <div class="btn-group me-1 mb-1">
-                <div class="dropdown">
-                    <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background-color: #435ebe;">
-                        <i class="bi bi-person-circle"></i> {{Auth::user()->nama}}
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-end" style="padding: 7px;">
-                        <h6>Kelola Akun</h6>
-                        <a href="{{ route('users.profile') }}" class="dropdown-item">Profile</a>
-                        <hr />
-                        <a href="{{ route('auth.logout') }}" style="color: red;" class="dropdown-item">Logout</a>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </div>
 <div class="page-content">
@@ -35,11 +20,13 @@
                         </h5>
                     </div>
                     <div class="card-body">
+                        @if(Auth::user()->level == 'pengasuh')
                         <div class="row">
                             <div class="col-2">
                                 <a class="btn btn-primary" href="{{route('barang.create')}}">Tambah Barang</a>
                             </div>
                         </div>
+                        @endif
                         <table id="exampleServerSide" class="table table-striped table-bordered table-hover text-center barang-table" style="width: 100%">
                             <thead>
                                 <tr>
@@ -48,7 +35,10 @@
                                     <th>Stok</th>
                                     <th>Deskripsi</th>
                                     {{-- <th>Note</th> --}}
+
+                                    @if(Auth::user()->level == 'pengasuh')
                                     <th>Action</th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody>
@@ -70,42 +60,75 @@
 <script>
     $(function() {
 
-        var table = $('.barang-table').DataTable({
-            processing: true,
-            responsive: true,
-            serverSide: true,
-            columnDefs: [{
-                    "className": "dt-center",
-                    "targets": "_all"
-                },
+        if ("{{Auth::user()->level}}" == 'pengasuh') {
+            var table = $('.barang-table').DataTable({
+                processing: true,
+                responsive: true,
+                serverSide: true,
+                columnDefs: [{
+                        "className": "dt-center",
+                        "targets": "_all"
+                    },
 
-            ],
-            ajax: "{{ route('barang.index') }}",
-            columns: [{
-                    data: 'DT_RowIndex',
-                    name: 'DT_RowIndex'
-                },
-                {
-                    data: 'nama_barang',
-                    name: 'nama_barang'
-                },
-                {
-                    render: function(data, type, row, meta) {
-                        return row.stok + " " + row.satuan;
-                    }
-                },
-                {
-                    data: 'description',
-                    name: 'description'
-                },
-                {
-                    data: 'action',
-                    name: 'action',
-                    orderable: false,
-                    searchable: false
-                },
-            ]
-        });
+                ],
+                ajax: "{{ route('barang.index') }}",
+                columns: [{
+                        data: 'DT_RowIndex',
+                        name: 'DT_RowIndex'
+                    },
+                    {
+                        data: 'nama_barang',
+                        name: 'nama_barang'
+                    },
+                    {
+                        render: function(data, type, row, meta) {
+                            return row.stok + " " + row.satuan;
+                        }
+                    },
+                    {
+                        data: 'description',
+                        name: 'description'
+                    },
+                    {
+                        data: 'action',
+                        name: 'action',
+                        orderable: false,
+                        searchable: false
+                    },
+                ]
+            });
+        } else {
+            var table = $('.barang-table').DataTable({
+                processing: true,
+                responsive: true,
+                serverSide: true,
+                columnDefs: [{
+                        "className": "dt-center",
+                        "targets": "_all"
+                    },
+
+                ],
+                ajax: "{{ route('barang.index') }}",
+                columns: [{
+                        data: 'DT_RowIndex',
+                        name: 'DT_RowIndex'
+                    },
+                    {
+                        data: 'nama_barang',
+                        name: 'nama_barang'
+                    },
+                    {
+                        render: function(data, type, row, meta) {
+                            return row.stok + " " + row.satuan;
+                        }
+                    },
+                    {
+                        data: 'description',
+                        name: 'description'
+                    },
+                ]
+            });
+        }
     });
 </script>
 @endsection

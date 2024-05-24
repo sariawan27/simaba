@@ -18,14 +18,21 @@ class KamarController extends Controller
     {
         if ($request->ajax()) {
             $data = Kamar::latest()->get();
-            return DataTables::of($data)
-                ->addIndexColumn()
-                ->addColumn('action', function($row){
-                    $actionBtn = '<a href="'.route('kamar.show', $row->id).'" class="edit btn btn-info btn-sm">Detail</a> <a href="'.route('kamar.delete', $row->id).'" class="delete btn btn-danger btn-sm">Delete</a>';
-                    return $actionBtn;
-                })
-                ->rawColumns(['action'])
-                ->make(true);
+            $userSession = session()->get('users');
+            if ($userSession->level == 'pengasuh') {
+                return DataTables::of($data)
+                    ->addIndexColumn()
+                    ->addColumn('action', function ($row) {
+                        $actionBtn = '<a href="' . route('kamar.show', $row->id) . '" class="edit btn btn-info btn-sm">Detail</a> <a href="' . route('kamar.delete', $row->id) . '" class="delete btn btn-danger btn-sm">Delete</a>';
+                        return $actionBtn;
+                    })
+                    ->rawColumns(['action'])
+                    ->make(true);
+            } else {
+                return DataTables::of($data)
+                    ->addIndexColumn()
+                    ->make(true);
+            }
         }
 
         return view('pages.kamar.index', []);
@@ -62,7 +69,7 @@ class KamarController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id=null)
+    public function show($id = null)
     {
         $dataKamar = Kamar::where('id', $id)->first();
 
@@ -80,7 +87,7 @@ class KamarController extends Controller
     /**
      * Tambah Taruni ke kamar X
      */
-    public function addTaruni(Request $request, $id=null)
+    public function addTaruni(Request $request, $id = null)
     {
         if ($request->taruni) {
             $taruni = explode(",", $request->taruni);
@@ -101,7 +108,7 @@ class KamarController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id=null)
+    public function edit($id = null)
     {
         //
     }
@@ -109,7 +116,7 @@ class KamarController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request,  $id=null)
+    public function update(Request $request,  $id = null)
     {
         $validator = Validator::make($request->all(), [
             'nama_kamar'              => 'required',
@@ -129,7 +136,7 @@ class KamarController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id=null)
+    public function destroy($id = null)
     {
         $kamar = Kamar::find($id);
 

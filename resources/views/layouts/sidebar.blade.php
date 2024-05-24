@@ -33,7 +33,7 @@
                         <span>Laporan</span>
                     </a>
 
-                    <ul class="submenu ">
+                    <ul class="submenu submenu-open">
 
                         <li class="submenu-item {{ ((request()->routeIs('laporan.*')) ? 'active' : '') }}">
                             <a href="{{ route('laporan.index') }}" class='submenu-link'>

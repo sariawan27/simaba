@@ -28,6 +28,25 @@
         <!-- sidebar -->
         @include('layouts.sidebar')
         <!-- end  sidebar -->
+        <nav class="navbar sticky-top navbar-light" style="z-index: 2; background-color: white;">
+            <div class="row" style="width: 100%;">
+                <div class="col-12 d-flex justify-content-end">
+                    <div class="btn-group me-1 mb-1">
+                        <div class="dropdown">
+                            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background-color: #435ebe;">
+                                <i class="bi bi-person-circle"></i> {{Auth::user()->nama}}
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-end" style="padding: 7px;">
+                                <h6 class="dropdown-header">Kelola Akun</h6>
+                                <a href="{{ route('users.profile') }}" class="dropdown-item">Profile</a>
+                                <hr />
+                                <a href="{{ route('auth.logout') }}" style="color: red;" class="dropdown-item">Logout</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
         <div id="main">
             <header class="mb-3">
                 <a href="#" class="burger-btn d-block d-xl-none">
