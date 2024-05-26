@@ -11,6 +11,7 @@
 <div class="page-content">
     <section class="row">
         <!-- page section -->
+        <div id="alertnya" style="top: 30px; width:100% !important;"></div>
         <div class="row">
             <div class="col">
                 <div class="card">
@@ -126,7 +127,6 @@
     </section>
 </div>
 
-<div id="alertnya" style="position: absolute; right: 0; top: 30px;">
 </div>
 
 <script src="{{asset('assets/compiled/js/app.js')}}"></script>
@@ -300,7 +300,7 @@
                 data: $("form").serialize(),
                 dataType: "json",
                 success: function(data) {
-                    console.log("sukses cuk")
+                    console.log(data)
                     //peringatan ketika data yg diinputkan tidak sesuai
                     $('#alertnya').css({
                         display: 'block',
@@ -308,7 +308,7 @@
                     });
                     $('#alertnya').html(`
                             <div class="alert alert-success alert-dismissible show fade" style="z-index: 13;">
-                                <i class="bi bi-check-circle"></i> Data berhasil disimpan.
+                            ${data?.message  ?  '' :'<i class="bi bi-check-circle"></i>'} ${data?.message  ?  data?.message : 'Data berhasil disimpan.'}
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
                         `)
@@ -351,12 +351,15 @@
                             $("#alertnya").fadeTo(1000, 0).slideUp(1000, function() {
                                 $(this).html(``);
                             });
+                            location.reload();
                         }, 2000);
                     } else {
                         //peringatan ketika data yg diinputkan tidak sesuai
+                        errorMessage = jqXHR.responseJSON;
+                        // console.log(errorMessage)
                         $('#alertnya').html(`
                                 <div class="alert alert-danger alert-dismissible show fade" style="z-index: 13;">
-                                    <i class="bi bi-exclamation-circle"></i> Gagal menyimpan data.
+                                    <i class="bi bi-exclamation-circle"></i> ${errorMessage?.message  ?  errorMessage?.message : 'Gagal menyimpan data.'}
                                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                 </div>
                             `)
@@ -364,6 +367,7 @@
                             $("#alertnya").fadeTo(1000, 0).slideUp(1000, function() {
                                 $(this).html(``);
                             });
+                            location.reload();
                         }, 2000);
                     }
                 }

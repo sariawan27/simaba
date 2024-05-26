@@ -155,7 +155,7 @@ class UserController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
-                    $actionBtn = '<a href="' . route('users.edit', $row->id) . '" class="edit btn btn-primary btn-sm">Edit</a> <a href="' . route('users.delete_kamar_taruni', [$row->id, $row->user_id]) . '" class="delete btn btn-danger btn-sm" onclick="return confirm(' . "'Yakin ingin menghapus ini?'" . ');">Delete</a>';
+                    $actionBtn = '<a href="' . route('users.edit', $row->user_id) . '" class="edit btn btn-primary btn-sm">Edit</a> <a href="' . route('users.delete_kamar_taruni', [$row->id, $row->user_id]) . '" class="delete btn btn-danger btn-sm" onclick="return confirm(' . "'Yakin ingin menghapus ini?'" . ');">Delete</a>';
                     return $actionBtn;
                 })
                 ->rawColumns(['action'])

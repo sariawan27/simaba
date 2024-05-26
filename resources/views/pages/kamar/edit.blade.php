@@ -11,6 +11,7 @@
 <div class="page-content">
     <section class="row">
         <!-- page section -->
+        <div id="alertnya" style="top: 30px; width:100% !important;"></div>
         <div class="row">
             <div class="col">
                 <div class="card">
@@ -131,7 +132,6 @@
     </section>
 </div>
 
-<div id="alertnya" style="position: absolute; right: 0; top: 30px;">
 </div>
 
 <script src="{{asset('assets/compiled/js/jquery-3.7.1.js')}}"></script>

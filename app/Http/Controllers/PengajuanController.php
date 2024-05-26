@@ -7,7 +7,9 @@ use App\Models\DetailPengajuan;
 use App\Models\Pengajuan;
 use App\Models\Ulasan;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\DataTables;
 
@@ -64,6 +66,7 @@ class PengajuanController extends Controller
         } else {
             $kodePengajuan = "KP" . str_pad("0", 7, '0', STR_PAD_LEFT);
         }
+
         return view('pages.pengajuan.add', [
             'dataBarang' => $barang,
             'kdPengajuan' => $kodePengajuan
@@ -96,21 +99,42 @@ class PengajuanController extends Controller
                     $barang = Barang::where('id', $value->barang_id);
                     $dataBarang = $barang->first();
 
-                    $barang->update([
-                        "stok" => $dataBarang->stok - $value->qty
-                    ]);
-
                     $detail = new DetailPengajuan();
-                    $detail->barang_id = $value->barang_id;
-                    $detail->quantity = $value->qty;
-                    $detail->pengajuan_id = $pengajuan->id;
-                    $detail->save();
+
+                    $checkBarang = $detail->selectRaw(DB::raw('sum(`detail_pengajuan`.`quantity`) as quantity'))->leftJoin('pengajuan', 'pengajuan.id', '=', 'detail_pengajuan.pengajuan_id')->where('pengajuan.user_id', $request->no)->where('detail_pengajuan.barang_id', $value->barang_id)->whereMonth('detail_pengajuan.created_at', Carbon::now()->month)->first();
+
+                    if (isset($checkBarang->quantity)) {
+                        if ($checkBarang->quantity >= $dataBarang->max_quantity) {
+                            $pengajuan->detailPengajuan()->delete();
+                            $pengajuan->ulasan()->delete();
+                            $pengajuan->delete();
+                            return response()->json(['message' => 'Anda telah melampaui batas pengajuan'], 400);
+                        } else {
+                            $barang->update([
+                                "stok" => $dataBarang->stok - $value->qty
+                            ]);
+
+                            $detail->barang_id = $value->barang_id;
+                            $detail->quantity = $value->qty;
+                            $detail->pengajuan_id = $pengajuan->id;
+                            $detail->save();
+                        }
+                    } else {
+                        $barang->update([
+                            "stok" => $dataBarang->stok - $value->qty
+                        ]);
+
+                        $detail->barang_id = $value->barang_id;
+                        $detail->quantity = $value->qty;
+                        $detail->pengajuan_id = $pengajuan->id;
+                        $detail->save();
+                    }
                 }
             } else {
                 return response()->json(['message' => 'Gagal menyimpan data pengajuan']);
             }
         } catch (\Throwable $th) {
-            //throw $th;
+            throw $th;
             return response()->json(['message' => 'Gagal menyimpan data pengajuan']);
         }
 
